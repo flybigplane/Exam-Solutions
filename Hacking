@@ -1,0 +1,49 @@
+#No need for special file editing, just name them correctly and paste the correct stuff inside : 
+
+'''
+Products.txt : 
+P234HF22222 r1011
+P234HF22223 r1112
+P234HF22225 r1114
+P111TG11115 r1015
+P111TG11116 r1216
+P331LS00110 r1017
+P331LS00120 r1318
+P331LS00130 r1019
+
+Purchases.txt : 
+P234HF22223 r1112
+P111TG11115 r1015
+P111TG11115 r1216
+P234HF22222 r1011
+P331LS00110 r1014
+P331LS00120 r1318
+P331LS00130 r1019
+P234HF22225 r1114
+P234HF22223 r1114
+
+'''
+
+
+INPUT_FILE = "Products.txt"
+SALE_FILE = "Purchases.txt"
+
+def sorted_products (line, product_dict) :
+    line_list = line.split(" ")
+    product_dict[line_list[0]] = line_list[1]
+    return (product_dict)
+
+def main () :
+    product_dict = {}
+    with open(INPUT_FILE) as products :
+        for line in products :
+            sorted_products(line, product_dict)
+    print("Suspicious transactions :")
+    with open(SALE_FILE) as purchases :
+        for line in purchases :
+            Purchase_list = line.split(" ")
+            if product_dict[Purchase_list[0]] != Purchase_list[1] :
+                print(f"Product code : {Purchase_list[0]}\nOfficial Dealer : {product_dict[Purchase_list[0]]}Dealer List : {product_dict[Purchase_list[0]][0:-1], Purchase_list[1][0:-1]}\n")
+
+if __name__ == "__main__" :
+    main ()
