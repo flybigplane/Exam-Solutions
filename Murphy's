@@ -1,0 +1,52 @@
+#DISCLAIMER : The shown output at the end of the README file of the exam contradicts what is written above. Therefore the program I made follows the instructions and does not output exactly what is stated in the "theoretical output"
+
+
+
+
+#Murphy's
+
+INPUT_FILE = "Murphy_reads.txt"
+WORD_FILE = "arguments.txt"
+
+
+
+def main () :
+    single_maxim = ""
+    maxim_list = []
+    subdivided = {}
+    content = ""
+    titles = []
+
+    with open(INPUT_FILE) as maxims :
+        for line in maxims :
+            if line == "\n" :
+                maxim_list.append(single_maxim)
+                single_maxim = ""
+            else :
+                single_maxim += line
+    for i in maxim_list :
+        small_list = i.split("\n")
+        title = small_list[0]
+        titles.append(title)
+        small_list.remove(title)
+        for j in small_list :
+            content += j
+        subdivided[title] = content
+        content = ""
+
+    with open(WORD_FILE) as words :
+        for word in words :
+            fixed_word = word[0:-1]
+            tracker = False
+            counter = 0
+            while counter <= len(titles)-1 :
+                if fixed_word.upper() in subdivided[titles[counter]].upper() :
+                    if len(subdivided[titles[counter]]) > 50 :
+                        print (f"{titles[counter]} - {subdivided[titles[counter]][0:51]}...")
+                    else :
+                        print (f"{titles[counter]} - {subdivided[titles[counter]]}")
+                    counter = len(titles)+1
+                counter += 1
+
+if __name__ == "__main__" :
+    main ()
