@@ -1,0 +1,97 @@
+PLEASE COPY THIS IN A TEXT FILE CALLED "guess_who.txt" (the one from squllero's github is kinda broken)
+Alex - Gender: Man, Hair Color: Black, Hair Length: Short, Mustache
+Alfred - Gender: Man, Hair Color: Red, Hair Length: Long, Mustache
+Anita - Gender: Woman, Hair Color: Blond, Hair Length: Long
+Anne - Gender: Woman, Hair Color: Black, Hair Length: Short
+Bernard - Gender: Man, Hair Color: Brown, Hair Length: Short, Hat
+Bill - Gender: Man, Hair Color: Red, Hair Length: Short, Beard, Bald
+Charles - Gender: Man, Hair Color: Blond, Hair Length: Short, Mustache
+Claire - Gender: Woman, Hair Color: Red, Hair Length: Short, Glasses, Hat
+David - Gender: Man, Hair Color: Blond, Hair Length: Short, Beard
+Eric - Gender: Man, Hair Color: Blond, Hair Length: Short, Hat
+Frans - Gender: Man, Hair Color: Red, Hair Length: Short
+George - Gender: Man, Hair Color: White, Hair Length: Short, Hat
+Herman - Gender: Man, Hair Color: Red, Hair Length: Short, Bald
+Joe - Gender: Man, Hair Color: Blond, Hair Length: Short, Glasses
+Maria - Gender: Woman, Hair Color: Brown, Hair Length: Long, Hat
+Max - Gender: Man, Hair Color: Black, Hair Length: Short, Mustache
+Paul - Gender: Man, Hair Color: White, Hair Length: Short, Glasses
+Peter - Gender: Man, Hair Color: White, Hair Length: Short
+Philip - Gender: Man, Hair Color: Black, Hair Length: Short, Beard
+Richard - Gender: Man, Hair Color: Brown, Hair Length: Short, Mustache, Beard, Bald
+Robert - Gender: Man, Hair Color: Brown, Hair Length: Short
+Sam - Gender: Man, Hair Color: White, Hair Length: Short, Glasses, Bald
+Susan - Gender: Woman, Hair Color: White, Hair Length: Long
+Tom - Gender: Man, Hair Color: Black, Hair Length: Short, Glasses, Bald
+
+
+
+
+PLEASE CREATE A TEXT FILE CALLED "guess_who_questions.txt" in which you put the questions in this VERY SPECIFIC format :
+feature_name= feature_value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Funky Guess who
+FILE_NAME = "guess_who.txt"
+QUESTIONS = "guess_who_questions.txt"
+
+def mem (line) :
+    attributes = "  Mustache   Hat   Glasses    Beard    Bald  "
+    i = 0
+    uncategorized = line.split("-")
+    name = uncategorized[0]
+    characteristics_list = uncategorized[1].split(",")
+    characteristics_list[-1] = characteristics_list[-1][0:-1]
+    single_dict = {"Name" : name, " Mustache" : "NO", " Hat" : "NO", " Glasses" : "NO", " Beard" : "NO", " Bald" : "NO"}
+    for chr in (characteristics_list[0:3]) :
+        divided_chr = chr.split(":")
+        single_dict[divided_chr[0]] = divided_chr[1]
+    for j in range(3, len(characteristics_list)) :
+        if characteristics_list[j] in attributes :
+            single_dict[characteristics_list[j]] = "YES"
+    return (single_dict)
+
+
+def main () :
+    try : 
+        all_ppl = []
+        correct = all_ppl
+        counter = 0
+        candidates = []
+    
+        with open(FILE_NAME) as characteristics :
+            for line in characteristics :
+                all_ppl.append(mem (line))
+        with open(QUESTIONS) as questions :
+            for line in questions :
+                questions_list = line.split("=")
+                for tracker in range(len(all_ppl)) :
+                    individual = correct[counter]
+                    if individual[questions_list[0]] in questions_list[1] :
+                        candidates.append(individual["Name"])
+                        counter += 1
+                    else :
+                        correct.remove(individual)
+                print (f"The individuals that have the{questions_list[0]} as{questions_list[1]} characteristic are {candidates}")
+                candidates = []
+                counter = 0
+    except OSError as problem : 
+        print ("The code broke")
+    except ValueError as problem : 
+        print ("Some value is messed up")
+
+
+if __name__ == "__main__" :
+    main ()
